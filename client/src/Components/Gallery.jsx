@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../api/Api";
+import axiosInstance, { serverURL } from "../api/Api";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import GallerySection from "../Components/GallerySection";
@@ -50,8 +50,8 @@ export default function GalleryPage() {
     title: g.title,
     date: g.date,
     location: g.location || "Jiitech",
-    image: `http://localhost:5000${g.images[0]}`,
-    thumbnails: g.images.slice(1).map(img => `http://localhost:5000${img}`),
+    image: `${serverURL}${g.images[0]}`,
+    thumbnails: g.images.slice(1).map(img => `${serverURL}${img}`),
     description: g.description
   }));
 

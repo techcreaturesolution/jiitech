@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/Api";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 
@@ -16,7 +16,7 @@ export default function PhotoList({ photos, onDelete, onUpdate }) {
     if (!window.confirm("🗑️ Delete this photo?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/photos/${id}`);
+      await axiosInstance.delete(`/photos/${id}`);
       toast.success("✅ Photo deleted successfully!");
       onDelete && onDelete();
     } catch (err) {
@@ -37,7 +37,7 @@ export default function PhotoList({ photos, onDelete, onUpdate }) {
   // ✅ Save Updated Photo
   const handleUpdate = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/photos/${id}`, editForm);
+      await axiosInstance.put(`/photos/${id}`, editForm);
 
       toast.success("✅ Photo updated successfully!");
 

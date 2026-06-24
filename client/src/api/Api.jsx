@@ -4,6 +4,10 @@ const baseURL = import.meta.env.MODE === "production"
   ? "https://jiitech.onrender.com/api" 
   : "/api";
 
+export const serverURL = import.meta.env.MODE === "production" 
+  ? "https://jiitech.onrender.com" 
+  : "http://localhost:5000";
+
 const axiosInstance = axios.create({
   baseURL,
   withCredentials: true,
