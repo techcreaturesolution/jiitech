@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import axiosInstance, { serverURL } from "../api/Api";
+import axiosInstance, { getImageUrl } from "../api/Api";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -10,7 +10,7 @@ import Footer from "./Footer";
 ══════════════════════════════════════════════ */
 export function CollabModal({ item, onClose }) {
   const images = [item.image].filter(Boolean).map(
-    (src) => src.startsWith("http") ? src : `${serverURL}${src}`
+    (src) => getImageUrl(src)
   );
 
   const total = images.length;
@@ -145,7 +145,7 @@ function CollabCard({ item, index, onView }) {
   const cardRef = useRef(null);
 
   const imgSrc = item.image
-    ? (item.image.startsWith("http") ? item.image : `${serverURL}${item.image}`)
+    ? getImageUrl(item.image)
     : null;
 
   const onMouseMove = (e) => {

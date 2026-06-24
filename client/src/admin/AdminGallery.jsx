@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import axiosInstance, { serverURL, getImageUrl } from "../api/Api";
+import axiosInstance, { getImageUrl } from "../api/Api";
 import { Images, Plus, X, Loader2, Trash2, Pencil } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
@@ -323,7 +323,7 @@ const AdminGallery = () => {
                 </div>
               ) : (
                 galleries.map((gal, index) => {
-                  const eventImages = gal.images.map(img => `${serverURL}${img}`);
+                  const eventImages = gal.images.map(img => getImageUrl(img));
                   const thumbnails = eventImages.slice(1);
                   return (
                     <div

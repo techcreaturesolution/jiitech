@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import axiosInstance, { serverURL, getImageUrl } from "../api/Api";
+import axiosInstance, { getImageUrl } from "../api/Api";
 import { Users, Plus, X, Loader2, ArrowRight, Image, Trash2, Pencil } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
@@ -268,7 +268,7 @@ const AdminCollaboration = () => {
                 </div>
               ) : (
                 collaborations.map((collab, index) => {
-                  const imageUrl = `${serverURL}${collab.image}`;
+                  const imageUrl = getImageUrl(collab.image);
                   return (
                     <div
                       key={collab._id}
@@ -342,7 +342,7 @@ const AdminCollaboration = () => {
         <CollabModal 
           item={{
             ...selectedCollab,
-            image: `${serverURL}${selectedCollab.image}`
+            image: getImageUrl(selectedCollab.image)
           }} 
           onClose={() => setSelectedCollab(null)} 
         />
