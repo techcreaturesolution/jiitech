@@ -13,7 +13,7 @@ export const createGallery = async (req, res, next) => {
 
     // Map files to URLs (assuming server is running on localhost:5000)
     // Using a relative path for the frontend to access via proxy
-    const images = req.files.map(file => `/uploads/${file.filename}`);
+    const images = req.files.map(file => file.filename);
 
     const gallery = await Gallery.create({
       academicYear,
@@ -60,11 +60,24 @@ export const updateGallery = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Gallery not found' });
     }
 
-    const { academicYear, event, title, description, date, location } = req.body;
+    const { academicYear, event, title, description, date, location, retainedImages } = req.body;
 
     let updatedImages = gallery.images;
+    
+    if (retainedImages) {
+      try {
+        updatedImages = JSON.parse(retainedImages);
+      } catch (e) {
+        if (Array.isArray(retainedImages)) {
+          updatedImages = retainedImages;
+        } else {
+          updatedImages = [retainedImages];
+        }
+      }
+    }
+
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/${file.filename}`);
+      const newImages = req.files.map(file => file.filename);
       updatedImages = [...updatedImages, ...newImages];
     }
 

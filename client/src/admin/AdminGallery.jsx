@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import axiosInstance, { serverURL } from "../api/Api";
+import axiosInstance, { serverURL, getImageUrl } from "../api/Api";
 import { Images, Plus, X, Loader2, Trash2, Pencil } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
@@ -29,6 +29,7 @@ const AdminGallery = () => {
     date: "",
   });
   const [images, setImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
 
   const eventOptions = [
     "Independence Day", "Republic Day", "Annual Function Day",
@@ -86,7 +87,12 @@ const AdminGallery = () => {
       description: gal.description,
       date: gal.date,
     });
+    setExistingImages(gal.images || []);
     setShowForm(true);
+  };
+
+  const handleRemoveExistingImage = (index) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -102,6 +108,7 @@ const AdminGallery = () => {
       data.append("title", formData.title);
       data.append("description", formData.description);
       data.append("date", formData.date);
+      data.append("retainedImages", JSON.stringify(existingImages));
 
       for (let i = 0; i < images.length; i++) {
         data.append("images", images[i]);
@@ -116,6 +123,7 @@ const AdminGallery = () => {
         setEditingId(null);
         setFormData({ academicYear: "", event: "", customEvent: "", title: "", description: "", date: "" });
         setImages([]);
+        setExistingImages([]);
         fetchGalleries(); // Refresh list
       }
     } catch (error) {
@@ -146,6 +154,7 @@ const AdminGallery = () => {
                     setEditingId(null);
                     setFormData({ academicYear: "", event: "", customEvent: "", title: "", description: "", date: "" });
                     setImages([]);
+                    setExistingImages([]);
                   }
                 }}
                 className="flex items-center gap-2 bg-[#C00000] text-white px-4 py-2 rounded-xl font-medium hover:bg-red-700 transition"
@@ -231,6 +240,27 @@ const AdminGallery = () => {
                     className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 py-3 focus:bg-white focus:border-[#C00000] focus:ring-4 focus:ring-red-500/10 outline-none transition-all duration-200 placeholder:text-gray-400 resize-none"
                   ></textarea>
                 </div>
+
+                {editingId && existingImages.length > 0 && (
+                  <div className="space-y-1.5">
+                    <label className="block text-sm font-semibold text-gray-700">Existing Images</label>
+                    <div className="flex gap-3 flex-wrap">
+                      {existingImages.map((img, i) => (
+                        <div key={i} className="relative w-24 h-24 border border-gray-200 rounded-lg overflow-hidden group shadow-sm">
+                          <img src={getImageUrl(img)} alt="existing" className="w-full h-full object-cover" />
+                          <button 
+                            type="button"
+                            onClick={() => handleRemoveExistingImage(i)}
+                            className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all shadow-md transform scale-90 group-hover:scale-100"
+                            title="Remove image"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-1.5">
                   <label className="block text-sm font-semibold text-gray-700">Upload Media (Images)</label>
