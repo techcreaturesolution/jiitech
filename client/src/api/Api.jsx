@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const baseURL = import.meta.env.MODE === "production" 
+  ? "https://jiitech.onrender.com/api" 
+  : "/api";
+
 const axiosInstance = axios.create({
-  baseURL: "/api", // IIS will proxy this → http://localhost:8000
+  baseURL,
   withCredentials: true,
 });
 
