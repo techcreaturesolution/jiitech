@@ -8,6 +8,13 @@ export const serverURL = import.meta.env.MODE === "production"
   ? "https://jiitech.onrender.com" 
   : "http://localhost:5000";
 
+export const getImageUrl = (img) => {
+  if (!img) return null;
+  if (img.startsWith("http")) return img;
+  const filename = img.replace(/^\/(uploads|photos)\//, '');
+  return `${serverURL}/photos/${filename}`;
+};
+
 const axiosInstance = axios.create({
   baseURL,
   withCredentials: true,
