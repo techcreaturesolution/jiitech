@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000" || "https://jiitech.onrender.com",
+        target: "https://jiitech.onrender.com" || "http://localhost:5000",
         changeOrigin: true,
       },
     },
