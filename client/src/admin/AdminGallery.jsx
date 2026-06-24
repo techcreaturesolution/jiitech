@@ -251,7 +251,7 @@ const AdminGallery = () => {
                           <button 
                             type="button"
                             onClick={() => handleRemoveExistingImage(i)}
-                            className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all shadow-md transform scale-90 group-hover:scale-100"
+                            className="absolute top-1 right-1 bg-black text-white rounded-full p-1 opacity-100 hover:bg-gray-800 transition-all shadow-md transform"
                             title="Remove image"
                           >
                             <X size={14} />

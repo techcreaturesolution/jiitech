@@ -33,6 +33,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Serve static files from photos directory and fallback to uploads for old images
+app.use('/photos', express.static(path.join(__dirname, '../photos')));
+app.use('/photos', express.static(path.join(__dirname, '../uploads')));
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
