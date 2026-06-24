@@ -2,8 +2,7 @@
 import { useState, useEffect } from "react";
 import axiosInstance, { getImageUrl } from "../api/Api";
 import { Users, Plus, X, Loader2, ArrowRight, Image, Trash2, Pencil } from "lucide-react";
-import AdminSidebar from "./AdminSidebar";
-import AdminHeader from "./AdminHeader";
+import AdminLayout from "./AdminLayout";
 import { CollabModal } from "../Components/Collaboration";
 
 const ACADEMIC_YEARS = [];
@@ -120,14 +119,9 @@ const AdminCollaboration = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans">
-      <AdminSidebar />
-
-      <main className="flex-1 flex flex-col">
-        <AdminHeader />
-
-        <div className="p-8">
-          <div className="flex justify-between items-center mb-6">
+    <AdminLayout>
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
               <Users size={28} className="text-[#C00000]" /> Manage Collaborations
             </h1>
@@ -335,7 +329,6 @@ const AdminCollaboration = () => {
             </div>
           )}
         </div>
-      </main>
 
       {/* View Details Modal */}
       {selectedCollab && (
@@ -347,7 +340,7 @@ const AdminCollaboration = () => {
           onClose={() => setSelectedCollab(null)} 
         />
       )}
-    </div>
+    </AdminLayout>
   );
 };
 

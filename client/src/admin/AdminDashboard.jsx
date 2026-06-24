@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/Api";
 import { Images, Users } from "lucide-react";
-import AdminSidebar from "./AdminSidebar";
-import AdminHeader from "./AdminHeader";
+import AdminLayout from "./AdminLayout";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -34,14 +33,9 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans">
-      <AdminSidebar />
-
-      <main className="flex-1 flex flex-col">
-        <AdminHeader />
-
-        <div className="p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h1>
+    <AdminLayout>
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h1>
 
           {loading ? (
             <div className="flex space-x-4 animate-pulse">
@@ -75,9 +69,8 @@ const AdminDashboard = () => {
 
             </div>
           )}
-        </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 };
 
