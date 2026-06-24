@@ -266,7 +266,8 @@ const AdminGallery = () => {
                   <label className="block text-sm font-semibold text-gray-700">Upload Media (Images)</label>
                   <div className="relative border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100/50 transition-colors duration-200 group overflow-hidden">
                     <input 
-                      type="file" multiple accept="image/*" onChange={handleFileChange} required
+                      type="file" multiple accept="image/*" onChange={handleFileChange}
+                      required={!editingId && existingImages.length === 0}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     <div className="p-6 text-center pointer-events-none">
@@ -274,15 +275,27 @@ const AdminGallery = () => {
                         <Images size={24} />
                       </div>
                       <p className="text-sm font-medium text-gray-700 mb-1">
-                        {images.length > 0 ? <span className="text-[#C00000]">{images.length} file(s) selected</span> : "Click or drag images here to upload"}
+                        {images.length > 0 ? <span className="text-[#C00000]">{images.length} new file(s) selected</span> : "Click or drag images here to upload"}
                       </p>
                       <p className="text-xs text-gray-500 px-4 line-clamp-1">
-                        {images.length > 0 
-                          ? Array.from(images).map(f => f.name).join(', ')
-                          : editingId ? "Select new images to append or leave empty to keep existing." : "Select multiple images at once. The first image will be used as the cover."}
+                        {editingId ? "Select new images to append or leave empty to keep existing." : "Select multiple images at once. The first image will be used as the cover."}
                       </p>
                     </div>
                   </div>
+
+                  {/* Previews for newly selected images */}
+                  {images.length > 0 && (
+                    <div className="mt-3">
+                      <label className="block text-xs font-semibold text-gray-500 mb-2">New Images Preview</label>
+                      <div className="flex gap-3 flex-wrap">
+                        {Array.from(images).map((file, i) => (
+                          <div key={i} className="relative w-20 h-20 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                            <img src={URL.createObjectURL(file)} alt="preview" className="w-full h-full object-cover" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-4 pb-2">

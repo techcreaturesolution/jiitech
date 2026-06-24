@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import axiosInstance, { serverURL } from "../api/Api";
+import axiosInstance, { serverURL, getImageUrl } from "../api/Api";
 import { Users, Plus, X, Loader2, ArrowRight, Image, Trash2, Pencil } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
@@ -76,6 +76,7 @@ const AdminCollaboration = () => {
       title: collab.title,
       description: collab.description,
       date: collab.date,
+      existingImage: collab.image,
     });
     setShowForm(true);
   };
@@ -201,24 +202,45 @@ const AdminCollaboration = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-semibold text-gray-700">Upload Media (Single Image)</label>
+                  <label className="block text-sm font-semibold text-gray-700">Upload Image</label>
                   <div className="relative border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100/50 transition-colors duration-200 group overflow-hidden">
                     <input 
-                      type="file" accept="image/*" onChange={handleFileChange} required={!editingId}
+                      type="file" accept="image/*" onChange={handleFileChange}
+                      required={!editingId}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
-                    <div className="p-6 text-center pointer-events-none">
-                      <div className="w-12 h-12 mb-3 bg-white shadow-sm rounded-full flex items-center justify-center mx-auto text-gray-400 group-hover:text-[#C00000] group-hover:scale-110 transition-all duration-300">
+                    <div className="p-6 text-center pointer-events-none flex flex-col items-center">
+                      <div className="w-12 h-12 mb-3 bg-white shadow-sm rounded-full flex items-center justify-center text-gray-400 group-hover:text-blue-600 group-hover:scale-110 transition-all duration-300">
                         <Image size={24} />
                       </div>
                       <p className="text-sm font-medium text-gray-700 mb-1">
-                        {image ? <span className="text-[#C00000]">{image.name}</span> : "Click or drag an image here to upload"}
+                        {image ? <span className="text-blue-600">New file selected</span> : "Click or drag image here"}
                       </p>
-                      <p className="text-xs text-gray-500 px-4">
-                        {image ? "1 file selected" : editingId ? "Select a new image to replace or leave empty to keep existing." : "Select a single image for the collaboration."}
+                      <p className="text-xs text-gray-500 px-4 line-clamp-1">
+                        {editingId && !image ? "Upload a new image to replace the current one" : "Max size 5MB. Jpg, Png, Webp."}
                       </p>
                     </div>
                   </div>
+
+                  {/* Preview for newly selected image */}
+                  {image && (
+                    <div className="mt-3">
+                      <label className="block text-xs font-semibold text-gray-500 mb-2">New Image Preview</label>
+                      <div className="relative w-32 h-32 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                        <img src={URL.createObjectURL(image)} alt="preview" className="w-full h-full object-cover" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Show existing image if editing and no new image is selected */}
+                  {editingId && !image && formData.existingImage && (
+                    <div className="mt-3">
+                      <label className="block text-xs font-semibold text-gray-500 mb-2">Current Image</label>
+                      <div className="relative w-32 h-32 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                        <img src={getImageUrl(formData.existingImage)} alt="current" className="w-full h-full object-cover" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-4 pb-2">
